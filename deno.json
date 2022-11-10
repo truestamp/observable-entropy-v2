@@ -1,0 +1,82 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "checkJs": false,
+    "importMap": "./import_map.json",
+    "lib": [
+      "deno.window"
+    ],
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false
+  },
+  "fmt": {
+    "files": {
+      "include": [
+        "src/"
+      ]
+    },
+    "options": {
+      "indentWidth": 2,
+      "lineWidth": 80,
+      "proseWrap": "always",
+      "singleQuote": false,
+      "useTabs": false
+    }
+  },
+  "lint": {
+    "files": {
+      "include": [
+        "src/"
+      ]
+    },
+    "rules": {
+      "exclude": [],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "tags": [
+        "recommended"
+      ]
+    }
+  },
+  "tasks": {
+    "check": "deno task lint && deno task format",
+    "dev": "deno task check && deno task run && deno task sign && deno task verify",
+    "format": "deno fmt src/",
+    "format-watch": "deno fmt --watch src/",
+    "heartbeat": "deno run -A --unstable --import-map ./import_map.json src/observable.ts admin heartbeat",
+    "info": "deno info --unstable --import-map ./import_map.json src/observable.ts",
+    "lint": "deno lint src/",
+    "run": "deno run -A --unstable --import-map ./import_map.json src/observable.ts entropy run",
+    "sign": "deno run -A --unstable --import-map ./import_map.json src/observable.ts admin sign",
+    "upload": "deno run -A --unstable --import-map ./import_map.json src/observable.ts admin upload",
+    "verify": "deno run -A --unstable --import-map ./import_map.json src/observable.ts verify --file entropy.json"
+  },
+  "test": {
+    "files": {
+      "exclude": [
+        "src/testdata/"
+      ],
+      "include": [
+        "src/"
+      ]
+    }
+  }
+}

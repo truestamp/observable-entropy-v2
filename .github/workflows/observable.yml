@@ -1,0 +1,36 @@
+name: Observable Entropy
+on:
+  repository_dispatch:
+    types: [trigger_generate]
+  workflow_dispatch: {}
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.27.2"
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 5
+      - name: Collect and combine new entropy
+        run: deno task run
+      - name: Sign new entropy
+        env:
+          API_SIGNING_KEY_SECRET: ${{ secrets.API_SIGNING_KEY_SECRET }}
+        run: deno task sign
+      - name: Verify new entropy locally
+        run: deno task verify
+      - name: Upload new entropy to Cloudflare R2
+        env:
+          CF_R2_ENDPOINT: ${{ secrets.CF_R2_ENDPOINT }}
+          CF_R2_ACCESS_KEY: ${{ secrets.CF_R2_ACCESS_KEY }}
+          CF_R2_SECRET_KEY: ${{ secrets.CF_R2_SECRET_KEY }}
+          CF_R2_BUCKET: ${{ secrets.CF_R2_BUCKET }}
+        run: deno task upload
+      - name: Send heartbeat to Better Uptime
+        env:
+          HEARTBEAT_URL: ${{ secrets.HEARTBEAT_URL }}
+        run: deno run -A --unstable --import-map=import_map.json src/observable.ts admin heartbeat

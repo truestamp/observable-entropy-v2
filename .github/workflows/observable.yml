@@ -10,7 +10,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: "1.27.2"
+          deno-version: "1.28.0"
       - name: Check out repo
         uses: actions/checkout@v3
         with:
@@ -33,4 +33,4 @@ jobs:
       - name: Send heartbeat to Better Uptime
         env:
           HEARTBEAT_URL: ${{ secrets.HEARTBEAT_URL }}
-        run: deno run -A --unstable --import-map=import_map.json src/observable.ts admin heartbeat
+        run: deno task heartbeat

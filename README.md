@@ -367,6 +367,8 @@ This verification process does not verify the validity of each entropy type agai
 
 The only pre-requisites are `git` and the `deno` runtime installed by following the [Deno installation steps](https://deno.land/#installation). `git` is installed on most operating systems by default.
 
+Please use Deno `v1.28.0` or higher (check with `deno --version`).
+
 ```txt
 # Clone the repo
 git clone https://github.com/truestamp/observable-entropy-v2.git
@@ -377,15 +379,15 @@ cd observable-entropy-v2
 # OPTION ONE : A specific entropy hash
 # Replace hash with the one you want to verify.
 
-deno run -A --unstable --import-map=import_map.json src/observable.ts verify --hash 0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f
+deno run -A --import-map=import_map.json src/observable.ts verify --hash 0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f
 
 # OPTION TWO : The latest entropy hash
 
-deno run -A --unstable --import-map=import_map.json src/observable.ts verify --latest
+deno run -A --import-map=import_map.json src/observable.ts verify --latest
 
 # OPTION THREE : A local entropy.json file
 
-deno run -A --unstable --import-map=import_map.json src/observable.ts verify --file entropy.json
+deno run -A --import-map=import_map.json src/observable.ts verify --file entropy.json
 ```
 
 ### Download

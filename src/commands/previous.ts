@@ -13,7 +13,7 @@ export async function previous() {
         console.log("previous");
 
         const resp = await fetchWithTimeout(
-          `${OBSERVABLE_BASE_URL}/latest.json`,
+          `${OBSERVABLE_BASE_URL}/latest`,
         );
         if (resp.err) {
           throw new Error(`failed to fetch : status code ${resp.err}`);
@@ -24,7 +24,7 @@ export async function previous() {
         ensureDirSync(ENTROPY_DIR);
         await writeCanonicalJSON(`${ENTROPY_DIR}/previous.json`, {
           hash,
-          uri: `${OBSERVABLE_BASE_URL}/${hash}.json`,
+          uri: `${OBSERVABLE_BASE_URL}/${hash}`,
         });
       },
       { delay: 1000, maxTry: 3 },

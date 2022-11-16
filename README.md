@@ -166,11 +166,11 @@ Verifiable manually.
 
 A backlink to the hash from a previous run of Observable Entropy. This chains together all observable entropy files based on the hash of their content with each referencing the previous.
 
-At the time entropy is captured, a request is made to [https://entropy-v2.truestamp.com/latest.json](https://entropy-v2.truestamp.com/latest.json) and the `hash` property value is extracted and incorporated in the new entropy.
+At the time entropy is captured, a request is made to [https://entropy-v2.truestamp.com/latest](https://entropy-v2.truestamp.com/latest) and the `hash` property value is extracted and incorporated in the new entropy.
 
 To verify, check that an entropy file exists at that named URL and contains the same `hash` value.
 
-For example, if the current value is `712c91451728fdd604643cc7395eaa833d16231590808a7eccee115f7936f93b` check that the URL `https://entropy-v2.truestamp.com/712c91451728fdd604643cc7395eaa833d16231590808a7eccee115f7936f93b.json` has that same value in the `hash` property.
+For example, if the current value is `712c91451728fdd604643cc7395eaa833d16231590808a7eccee115f7936f93b` check that the URL `https://entropy-v2.truestamp.com/712c91451728fdd604643cc7395eaa833d16231590808a7eccee115f7936f93b` has that same value in the `hash` property.
 
 ### NIST Randomness Beacon
 
@@ -321,9 +321,9 @@ The `latest.json` value is always overwritten by the newest entropy file.
 
 Example URLS:
 
-[https://entropy-v2.truestamp.com/latest.json](https://entropy-v2.truestamp.com/latest.json)
+[https://entropy-v2.truestamp.com/latest](https://entropy-v2.truestamp.com/latest)
 
-[https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f.json](https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f.json)
+[https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f](https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f)
 
 ### Collection Schedule
 
@@ -398,12 +398,12 @@ All files are available for download from a public storage bucket.
 
 Returns the latest entropy file.
 
-[https://entropy-v2.truestamp.com/latest.json](https://entropy-v2.truestamp.com/latest.json)
+[https://entropy-v2.truestamp.com/latest](https://entropy-v2.truestamp.com/latest)
 
 ### Fetch by Entropy Hash (`sha256`)
 
 Returns the contents of the `[hash].json` that has a specific entropy `hash` value.
 
-`https://entropy-v2.truestamp.com/:hash.json`
+`https://entropy-v2.truestamp.com/:hash`
 
-[https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f.json](https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f.json)
+[https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f](https://entropy-v2.truestamp.com/0eeb71aed3e54c11c2f93c1cba15f7b05a16526740f69364b25364834110bc1f)

@@ -7,9 +7,8 @@ export async function cleanup() {
 
   try {
     await Deno.remove(ENTROPY_DIR, { recursive: true });
-  } catch (error) {
+  } catch (_error) {
     // dir does not exist
-    console.error(error);
   }
 }
 

@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyHackerNews, EntropyHackerNewsStory } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -13,33 +14,28 @@ export async function hackerNews() {
       async () => {
         console.log("hacker-news");
 
-        const newsStories = await fetchWithTimeout(
+        const newsStories = await get<number[]>(
           "https://hacker-news.firebaseio.com/v0/newstories.json",
         );
-
-        if (newsStories.err) {
-          throw new Error(`failed to fetch : status code ${newsStories.err}`);
-        }
 
         const stories = [];
 
         for (let i = 0; i < NUMBER_OF_STORIES; i++) {
-          const story = await fetchWithTimeout(
+          const story: EntropyHackerNewsStory = await get<
+            EntropyHackerNewsStory
+          >(
             `https://hacker-news.firebaseio.com/v0/item/${newsStories[i]}.json`,
           );
-          if (story.err) {
-            throw new Error(`failed to fetch : status code ${story.err}`);
-          }
 
-          const { by, id, time, title, url } = story;
+          EntropyHackerNewsStory.parse(story);
 
-          stories.push({ by, id, time, title, url });
+          stories.push(story);
         }
 
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/hacker-news.json`, {
-          stories,
-        });
+        await writeCanonicalJSON(
+          `${ENTROPY_DIR}/hacker-news.json`,
+          EntropyHackerNews.parse({ stories }),
+        );
       },
       { delay: 1000, maxTry: 3 },
     );

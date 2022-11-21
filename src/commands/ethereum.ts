@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyEthereum } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -10,21 +11,14 @@ export async function ethereum() {
       async () => {
         console.log("ethereum");
 
-        const resp = await fetchWithTimeout(
+        const resp: EntropyEthereum = await get<EntropyEthereum>(
           "https://api.blockcypher.com/v1/eth/main",
         );
-        if (resp.err) {
-          throw new Error(`failed to fetch : status code ${resp.err}`);
-        }
 
-        // extract just the data we want
-        const { height, hash, time } = resp;
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/ethereum.json`, {
-          height,
-          hash,
-          time,
-        });
+        await writeCanonicalJSON(
+          `${ENTROPY_DIR}/ethereum.json`,
+          EntropyEthereum.parse(resp),
+        );
       },
       { delay: 1000, maxTry: 3 },
     );

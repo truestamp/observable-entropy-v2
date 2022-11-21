@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyNistBeacon } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -10,25 +11,14 @@ export async function nistBeacon() {
       async () => {
         console.log("nist-beacon");
 
-        const beacon = await fetchWithTimeout(
+        const resp = await get<{ pulse: EntropyNistBeacon }>(
           "https://beacon.nist.gov/beacon/2.0/pulse/last",
         );
 
-        if (beacon.err) {
-          throw new Error(`failed to fetch : status code ${beacon.err}`);
-        }
+        const { pulse } = resp;
+        const beacon = EntropyNistBeacon.parse(pulse);
 
-        const { pulse } = beacon;
-        const { chainIndex, outputValue, pulseIndex, timeStamp, uri } = pulse;
-
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/nist-beacon.json`, {
-          chainIndex,
-          outputValue,
-          pulseIndex,
-          timeStamp,
-          uri,
-        });
+        await writeCanonicalJSON(`${ENTROPY_DIR}/nist-beacon.json`, beacon);
       },
       { delay: 1000, maxTry: 3 },
     );

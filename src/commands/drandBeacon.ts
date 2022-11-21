@@ -1,13 +1,16 @@
 import {
   Command,
   DrandClient,
-  DrandHTTP,
-  ensureDirSync,
-  isTooManyTries,
-  retryAsync,
+  DrandHTTP, isTooManyTries,
+  retryAsync
 } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import {
+  EntropyDrandBeacon,
+  EntropyDrandBeaconChainInfo,
+  EntropyDrandBeaconRandomness
+} from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -21,32 +24,33 @@ export async function drandBeacon() {
         console.log("drand-beacon");
         const urls = ["https://drand.cloudflare.com"];
 
-        const resp = await fetchWithTimeout(
+        const resp: EntropyDrandBeaconChainInfo = await get<
+          EntropyDrandBeaconChainInfo
+        >(
           "https://drand.cloudflare.com/info",
         );
 
-        if (resp.err) {
-          throw new Error(`failed to fetch : status code ${resp.err}`);
-        }
-
-        const chainInfo = resp;
-
-        const options = { chainInfo };
+        const chainInfo: EntropyDrandBeaconChainInfo =
+          EntropyDrandBeaconChainInfo.parse(resp);
 
         const client = await DrandClient.wrap(
           DrandHTTP.forURLs(urls, chainInfo.hash),
-          options,
+          { chainInfo },
         );
 
         const randomness = await client.get();
-
         await client.close();
 
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/drand-beacon.json`, {
+        EntropyDrandBeaconRandomness.parse(randomness);
+
+        const beacon: EntropyDrandBeacon = {
           chainInfo,
           randomness,
-        });
+        };
+
+        EntropyDrandBeacon.parse(beacon);
+
+        await writeCanonicalJSON(`${ENTROPY_DIR}/drand-beacon.json`, beacon);
       },
       { delay: 1000, maxTry: 3 },
     );

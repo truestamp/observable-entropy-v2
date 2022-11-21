@@ -631,82 +631,114 @@ export const CanonicalHash = z.object({
 
 export type CanonicalHash = z.infer<typeof CanonicalHash>;
 
+export const EntropyBitcoin = z.object({
+  block_index: z.number().int(),
+  hash: HashHex,
+  height: z.number().int(),
+  time: z.number().int(),
+});
+
+export type EntropyBitcoin = z.infer<typeof EntropyBitcoin>;
+
+export const EntropyDrandBeaconChainInfo = z.object({
+  genesis_time: z.number().int(),
+  groupHash: HashHex,
+  hash: HashHex,
+  metadata: z.object({
+    beaconID: z.string(),
+  }).optional(),
+  period: z.number().int(),
+  public_key: HashHex,
+  schemeID: z.string().optional(),
+});
+
+export type EntropyDrandBeaconChainInfo = z.infer<
+  typeof EntropyDrandBeaconChainInfo
+>;
+
+export const EntropyDrandBeaconRandomness = z.object({
+  previous_signature: HashHex,
+  randomness: HashHex,
+  round: z.number().int(),
+  signature: HashHex,
+});
+
+export type EntropyDrandBeaconRandomness = z.infer<
+  typeof EntropyDrandBeaconRandomness
+>;
+
+export const EntropyDrandBeacon = z.object({
+  chainInfo: EntropyDrandBeaconChainInfo,
+  randomness: EntropyDrandBeaconRandomness,
+});
+
+export type EntropyDrandBeacon = z.infer<typeof EntropyDrandBeacon>;
+
+export const EntropyEthereum = z.object({
+  hash: HashHex,
+  height: z.number().int(),
+  time: ISO8601UTC,
+});
+
+export type EntropyEthereum = z.infer<typeof EntropyEthereum>;
+
+export const EntropyHackerNewsStory = z.object({
+  by: z.string(),
+  id: z.number().int(),
+  time: z.number().int(),
+  title: z.string(),
+  url: z.string().url().optional(),
+});
+
+export type EntropyHackerNewsStory = z.infer<typeof EntropyHackerNewsStory>;
+
+export const EntropyHackerNews = z.object({
+  stories: z.array(EntropyHackerNewsStory),
+});
+
+export type EntropyHackerNews = z.infer<typeof EntropyHackerNews>;
+
+export const EntropyNistBeacon = z.object({
+  chainIndex: z.number().int(),
+  outputValue: HashHex,
+  pulseIndex: z.number().int(),
+  timeStamp: ISO8601UTC,
+  uri: z.string().url(),
+});
+
+export type EntropyNistBeacon = z.infer<typeof EntropyNistBeacon>;
+
+export const EntropyPrevious = z.object({
+  hash: HashHex,
+  uri: z.string().url(),
+});
+
+export type EntropyPrevious = z.infer<typeof EntropyPrevious>;
+
+export const EntropyStellar = z.object({
+  closed_at: ISO8601UTC,
+  hash: HashHex,
+  sequence: z.number().int(),
+});
+
+export type EntropyStellar = z.infer<typeof EntropyStellar>;
+
+export const EntropyTimestamp = z.object({
+  capturedAt: ISO8601UTC,
+});
+
+export type EntropyTimestamp = z.infer<typeof EntropyTimestamp>;
+
 export const EntropyResponse = z.object({
   data: z.object({
-    bitcoin: z.optional(
-      z.object({
-        blockIndex: z.number().int(),
-        hash: HashHex,
-        height: z.number().int(),
-        time: z.number().int(),
-      }),
-    ),
-    "drand-beacon": z.optional(
-      z.object({
-        chainInfo: z.object({
-          genesis_time: z.number().int(),
-          groupHash: HashHex,
-          hash: HashHex,
-          metadata: z.object({
-            beaconID: z.string(),
-          }).optional(),
-          period: z.number().int(),
-          public_key: HashHex,
-          schemeID: z.string().optional(),
-        }),
-        randomness: z.object({
-          previous_signature: HashHex,
-          randomness: HashHex,
-          round: z.number().int(),
-          signature: HashHex,
-        }),
-      }),
-    ),
-    ethereum: z.optional(
-      z.object({
-        hash: HashHex,
-        height: z.number().int(),
-        time: ISO8601UTC,
-      }),
-    ),
-    "hacker-news": z.optional(
-      z.object({
-        stories: z.array(
-          z.object({
-            by: z.string(),
-            id: z.number().int(),
-            time: z.number().int(),
-            title: z.string(),
-            url: z.string().url().optional(),
-          }),
-        ),
-      }),
-    ),
-    "nist-beacon": z.optional(
-      z.object({
-        chainIndex: z.number().int(),
-        outputValue: HashHex,
-        pulseIndex: z.number().int(),
-        timeStamp: ISO8601UTC,
-        uri: z.string().url(),
-      }),
-    ),
-    previous: z.optional(
-      z.object({
-        hash: HashHex,
-        uri: z.string().url(),
-      }),
-    ),
-    stellar: z.optional(
-      z.object({
-        closed_at: ISO8601UTC,
-        hash: HashHex,
-        sequence: z.number().int(),
-      }),
-    ),
-    timestamp: z.object({
-      capturedAt: ISO8601UTC,
-    }),
+    bitcoin: EntropyBitcoin.strict().optional(),
+    "drand-beacon": EntropyDrandBeacon.strict().optional(),
+    ethereum: EntropyEthereum.strict().optional(),
+    "hacker-news": EntropyHackerNews.strict().optional(),
+    "nist-beacon": EntropyNistBeacon.strict().optional(),
+    previous: EntropyPrevious.strict().optional(),
+    stellar: EntropyStellar.strict().optional(),
+    timestamp: EntropyTimestamp.strict(),
   }),
   hash: HashHex32,
   hashType: z.literal("sha-256"),

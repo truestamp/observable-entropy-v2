@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyPrevious, EntropyResponse } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -12,20 +13,20 @@ export async function previous() {
       async () => {
         console.log("previous");
 
-        const resp = await fetchWithTimeout(
+        const resp: EntropyResponse = await get<EntropyResponse>(
           `${OBSERVABLE_BASE_URL}/latest`,
         );
-        if (resp.err) {
-          throw new Error(`failed to fetch : status code ${resp.err}`);
-        }
+
+        EntropyResponse.parse(resp);
 
         const { hash } = resp;
 
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/previous.json`, {
+        const previous: EntropyPrevious = EntropyPrevious.parse({
           hash,
           uri: `${OBSERVABLE_BASE_URL}/${hash}`,
         });
+
+        await writeCanonicalJSON(`${ENTROPY_DIR}/previous.json`, previous);
       },
       { delay: 1000, maxTry: 3 },
     );

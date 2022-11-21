@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyStellar } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -12,33 +13,19 @@ export async function stellar() {
         // Retrieve the last ledger ID.
         // curl -X GET "https://horizon.stellar.org/fee_stats" > stellar-fee-stats.json
 
-        const feeStats = await fetchWithTimeout(
+        const feeStats = await get<{ last_ledger: string }>(
           "https://horizon.stellar.org/fee_stats",
         );
 
-        if (feeStats.err) {
-          throw new Error(`failed to fetch : status code ${feeStats.err}`);
-        }
-
-        // const { data: feeStats } = respStats
-
         // Read the ledger for last ledger ID
-        const latestLedger = await fetchWithTimeout(
+        const latestLedger: EntropyStellar = await get<EntropyStellar>(
           `https://horizon.stellar.org/ledgers/${feeStats.last_ledger}`,
         );
 
-        if (latestLedger.err) {
-          throw new Error(`failed to fetch : status code ${latestLedger.err}`);
-        }
-
-        // extract just the data we want
-        const { closed_at, hash, sequence } = latestLedger;
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/stellar.json`, {
-          closed_at,
-          hash,
-          sequence,
-        });
+        await writeCanonicalJSON(
+          `${ENTROPY_DIR}/stellar.json`,
+          EntropyStellar.parse(latestLedger),
+        );
       },
       { delay: 1000, maxTry: 3 },
     );

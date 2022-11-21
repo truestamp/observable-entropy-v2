@@ -1,5 +1,6 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
+import { EntropyTimestamp } from "../types.ts";
 import { writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
@@ -10,10 +11,11 @@ export async function timestamp() {
       async () => {
         console.log("timestamp");
 
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/timestamp.json`, {
+        const timestamp: EntropyTimestamp = {
           capturedAt: new Date().toISOString(),
-        });
+        };
+
+        await writeCanonicalJSON(`${ENTROPY_DIR}/timestamp.json`, timestamp);
       },
       { delay: 1000, maxTry: 3 },
     );

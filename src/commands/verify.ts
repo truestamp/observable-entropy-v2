@@ -8,13 +8,9 @@ import {
   verifyEd25519
 } from "../deps.ts";
 
-import { digestMessage, fetchWithTimeout } from "../utils.ts";
+import { digestMessage, get } from "../utils.ts";
 
-import {
-  ENTROPY_BASE_URL,
-  ENTROPY_FILE,
-  PUBLIC_KEYS_BASE_URL
-} from "../constants.ts";
+import { ENTROPY_BASE_URL, PUBLIC_KEYS_BASE_URL } from "../constants.ts";
 
 import { EntropyResponse, SignedKey } from "../types.ts";
 
@@ -25,16 +21,11 @@ function generatePublicKeyHandle(publickey: Uint8Array): string {
 async function verifyPublicKey(publickey: Uint8Array): Promise<boolean> {
   try {
     const handle = generatePublicKeyHandle(publickey);
-    const keyObj = await fetchWithTimeout(
+    const resp: SignedKey = await get<SignedKey>(
       `${PUBLIC_KEYS_BASE_URL}/${handle}`,
     );
 
-    if (!keyObj) {
-      return false;
-    }
-
-    const key: SignedKey = SignedKey.parse(keyObj);
-
+    const key: SignedKey = SignedKey.parse(resp);
     const { publicKey: foundPublicKey } = key;
     if (foundPublicKey !== encodeBase64(publickey)) {
       return false;
@@ -56,13 +47,11 @@ async function verify(options: {
   let entropy;
 
   if (options.latest) {
-    const url = `${ENTROPY_BASE_URL}/latest`;
-    entropy = await fetchWithTimeout(url);
+    entropy = await get<EntropyResponse>(`${ENTROPY_BASE_URL}/latest`);
   } else if (options.hash) {
-    const url = `${ENTROPY_BASE_URL}/${options.hash}`;
-    entropy = await fetchWithTimeout(url);
+    entropy = await get<EntropyResponse>(`${ENTROPY_BASE_URL}/${options.hash}`);
   } else if (options.file) {
-    const entropyBytes = Deno.readFileSync(ENTROPY_FILE);
+    const entropyBytes = Deno.readFileSync(options.file);
     entropy = JSON.parse(new TextDecoder().decode(entropyBytes));
   } else {
     throw new Error(
@@ -74,19 +63,9 @@ async function verify(options: {
     throw new Error("invalid : no entropy");
   }
 
-  const entropyParsed = EntropyResponse.parse(entropy);
+  const entropyParsed: EntropyResponse = EntropyResponse.parse(entropy);
 
-  const { data, hash, publicKey, signature, signatureType } = entropyParsed;
-
-  if (!data) {
-    throw new Error("invalid : no entropy data");
-  }
-
-  if (!hash || !publicKey || !signature || !signatureType) {
-    throw new Error("invalid : missing hash or signature");
-  }
-
-  const publicKeyBytes = decodeBase64(publicKey);
+  const publicKeyBytes = decodeBase64(entropyParsed.publicKey);
 
   const isValidRemotePublicKey = await verifyPublicKey(publicKeyBytes);
 
@@ -96,7 +75,7 @@ async function verify(options: {
     );
   }
 
-  const canonicalData = await canonify(data);
+  const canonicalData = await canonify(entropyParsed.data);
 
   if (!canonicalData) {
     throw new Error("invalid : no canonical data");
@@ -104,11 +83,11 @@ async function verify(options: {
 
   const canonicalDataHash = await digestMessage(canonicalData);
 
-  if (hash !== encodeHex(canonicalDataHash, true)) {
+  if (entropyParsed.hash !== encodeHex(canonicalDataHash, true)) {
     throw new Error("invalid : hash mismatch");
   }
 
-  const signatureBytes = decodeBase64(signature);
+  const signatureBytes = decodeBase64(entropyParsed.signature);
 
   const isValid = verifyEd25519(
     publicKeyBytes,
@@ -120,7 +99,7 @@ async function verify(options: {
     throw new Error("invalid : bad signature");
   }
 
-  console.log(`verify : ok : ${hash}`);
+  console.log(`verify : ok : ${entropyParsed.hash}`);
 }
 
 export const verifyCommand = new Command()

@@ -1,6 +1,7 @@
-import { Command, ensureDirSync, isTooManyTries, retryAsync } from "../deps.ts";
+import { Command, isTooManyTries, retryAsync } from "../deps.ts";
 
-import { fetchWithTimeout, writeCanonicalJSON } from "../utils.ts";
+import { EntropyBitcoin } from "../types.ts";
+import { get, writeCanonicalJSON } from "../utils.ts";
 
 import { ENTROPY_DIR } from "../constants.ts";
 
@@ -10,23 +11,14 @@ export async function bitcoin() {
       async () => {
         console.log("bitcoin");
 
-        const resp = await fetchWithTimeout(
+        const resp: EntropyBitcoin = await get<EntropyBitcoin>(
           "https://blockchain.info/latestblock",
         );
 
-        if (resp.err) {
-          throw new Error(`failed to fetch : status code ${resp.err}`);
-        }
-
-        // extract just the data we want
-        const { height, hash, time, block_index: blockIndex } = resp;
-        ensureDirSync(ENTROPY_DIR);
-        await writeCanonicalJSON(`${ENTROPY_DIR}/bitcoin.json`, {
-          height,
-          hash,
-          time,
-          blockIndex,
-        });
+        await writeCanonicalJSON(
+          `${ENTROPY_DIR}/bitcoin.json`,
+          EntropyBitcoin.parse(resp),
+        );
       },
       { delay: 1000, maxTry: 3 },
     );

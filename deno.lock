@@ -268,17 +268,73 @@
     "https://deno.land/x/s3_lite_client@0.2.0/object-uploader.ts": "b4bad0d771d79b2bb23b8cab0e6f7be85a2390e18957c612fd5cda11c39f55b0",
     "https://deno.land/x/s3_lite_client@0.2.0/signing.ts": "544b6fdaedf0457db585824a1d597800b8c7cdb72bdb99d67d50a790a8d29769",
     "https://deno.land/x/s3_lite_client@0.2.0/transform-chunk-sizes.ts": "b26ff6f90477de9a3c7095503d8396f0db50c54ee84ac8c800f8b95945c642fd",
-    "https://deno.land/x/s3_lite_client@0.2.0/xml-parser.ts": "3360a133aeee603966e7a430edad3b0602e62ac6e9ac6b6ee07f0295b3b4014f"
+    "https://deno.land/x/s3_lite_client@0.2.0/xml-parser.ts": "3360a133aeee603966e7a430edad3b0602e62ac6e9ac6b6ee07f0295b3b4014f",
+    "https://deno.land/x/zod@v3.19.1/ZodError.ts": "bd013373ed0cb47621d18df2abb8709a231166806821d76a84d31cad7068379e",
+    "https://deno.land/x/zod@v3.19.1/errors.ts": "5285922d2be9700cc0c70c95e4858952b07ae193aa0224be3cbd5cd5567eabef",
+    "https://deno.land/x/zod@v3.19.1/external.ts": "584f70718e55ae2660d18a552f9c3a5d022f8153aa43e6537f2c2738d6808d42",
+    "https://deno.land/x/zod@v3.19.1/helpers/enumUtil.ts": "54efc393cc9860e687d8b81ff52e980def00fa67377ad0bf8b3104f8a5bf698c",
+    "https://deno.land/x/zod@v3.19.1/helpers/errorUtil.ts": "7a77328240be7b847af6de9189963bd9f79cab32bbc61502a9db4fe6683e2ea7",
+    "https://deno.land/x/zod@v3.19.1/helpers/parseUtil.ts": "920a5623929a4be9110412f82d16ccda537a58e153c942a6d6b8a38329f293a1",
+    "https://deno.land/x/zod@v3.19.1/helpers/partialUtil.ts": "8dc921a02b47384cf52217c7e539268daf619f89319b75bdf13ea178815725df",
+    "https://deno.land/x/zod@v3.19.1/helpers/typeAliases.ts": "a1a8d039eb98925f242f5ea1e21e6d3cabd7f05e9747680165c914695c979b4f",
+    "https://deno.land/x/zod@v3.19.1/helpers/util.ts": "27765b9fbf843da59fcc16dccd6478976051b483769ec8e8376ac051bbac4a02",
+    "https://deno.land/x/zod@v3.19.1/index.ts": "035a7422d9f2be54daa0fe464254b69225b443000673e4794095d672471e8792",
+    "https://deno.land/x/zod@v3.19.1/locales/en.ts": "152ea350b7df6ce14f2806fc8c0972f56c9b2de6a3dd1129795287f50dee4374",
+    "https://deno.land/x/zod@v3.19.1/mod.ts": "64e55237cb4410e17d968cd08975566059f27638ebb0b86048031b987ba251c4",
+    "https://deno.land/x/zod@v3.19.1/types.ts": "ab062fe1640d2172f49ca593fb325a22f8927145201f29b02b62353c79db2501",
+    "https://esm.sh/v94/@stablelib/base64@1.0.1": "f85e2610e65ce234fa7f19cff7fcd0495e0e836734a5bc12569775ae94c5b4bb",
+    "https://esm.sh/v94/@stablelib/base64@1.0.1/deno/base64.js": "649868a2e6beed7d070bce5eb542d3c7cb9307877108398f1bfbe54e7df11c91",
+    "https://esm.sh/v94/@stablelib/base64@1.0.1/lib/base64.d.ts": "7d61d70bfdb832b7b74c9ff1b18fdfbb0415cfe2054a446ca284369fce7b8edb",
+    "https://esm.sh/v94/@truestamp/id@1.4.1": "b4d6a1a8125ca89af9c6da2724dff7895f3de8e6a5840c3915ecef28f6bf2877",
+    "https://esm.sh/v94/@truestamp/id@1.4.1/deno/id.js": "1df93c2444984d78f7f1399e6a30fc392215f5f281bf6868b09d02062cbf1540",
+    "https://esm.sh/v94/@truestamp/id@1.4.1/lib/index.d.ts": "a5f583730a50f7c9454a318a5144bc2aee4e466945dd5defb8db12e9fcdabaf3",
+    "https://esm.sh/v94/@types/luxon@3.1.0/index.d.ts": "ada272d03ff2305ccf09cb7560563c4b457088d8611fb988a6cfb675c81cb4d6",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/datetime.d.ts": "9775901f07fb19e34acf794c7d684bf511bd564aaa8c64d0d63c7367ade91b2a",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/duration.d.ts": "f628fefd357c106d916b92c025880df8caa6b276d819e4010662edcac2bed766",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/info.d.ts": "ad885efb88eba7e0212301d6d36f2122e602a7ad5acf874decbdda082dc232d2",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/interval.d.ts": "d76e98ebad42f277cfeadc70f443ce23f6f46c8604f01fba89fb95f4da7adc11",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/luxon.d.ts": "ebed01e1aa27660d0582fbd2afaee058feae47e7df0a760227736ec4224ac57d",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/misc.d.ts": "52ed17fe2c0a4bb27a4f13e99234b3d1f364dc27f9bd7964946d5ec62792a0cc",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/settings.d.ts": "d1582c4a1587316a67c1641cfe354a8d30d9457fa7c8a9e6e5198b27840fc6e6",
+    "https://esm.sh/v94/@types/luxon@3.1.0/src/zone.d.ts": "45938045285af93edb0065d83c44410e18b34fd1285b5ce46e025a46d5042a46",
+    "https://esm.sh/v94/iso-3166-ts@2.2.0": "3cb886bf404d2fd48440acff805b98e41a2d64e7cda6a3e09b4931947f0bdac7",
+    "https://esm.sh/v94/iso-3166-ts@2.2.0/deno/iso-3166-ts.js": "d6a385360430032100f31d03c84291cae6c13c68234104c1ca3e22efe201137f",
+    "https://esm.sh/v94/iso-3166-ts@2.2.0/dist/index.d.ts": "7b5a2b20d95b5941874e0a39f560c455c04f48f61039f782b39a4f4d28ee60f9",
+    "https://esm.sh/v94/luxon@3.1.0": "4d5fa5c1ca73686ea85d44c0600713673a2c9acf5372ba59c6ed374cd37a3a8c",
+    "https://esm.sh/v94/luxon@3.1.0/deno/luxon.js": "572c5048e8f43274fa559cdfc0a4236a806a5f4c1f5d59abe33730e4d3b4a869",
+    "https://esm.sh/v94/zod@3.19.1": "d301fb8e12f72f61e8407b6b06130b90abe28243ab93904b6bd657c243252e26",
+    "https://esm.sh/v94/zod@3.19.1/deno/zod.js": "96dffd86a9b994ed72dafd80c0f7917a8649893037d44e8c142bf2538ae76d5f",
+    "https://esm.sh/v94/zod@3.19.1/index.d.ts": "b51c954b9557b1dcb03b2bf34cd136e710cb9aa276e686cac0e291249590a52a",
+    "https://esm.sh/v94/zod@3.19.1/lib/ZodError.d.ts": "658f8a24b16c4bb348bee9ebf7be0d3a7f72514fd52c7f79ef225183152a80a8",
+    "https://esm.sh/v94/zod@3.19.1/lib/errors.d.ts": "5ec2790f877581637c058eb5bbb72e855a078620d0781d2a6a8f308fe1d5436f",
+    "https://esm.sh/v94/zod@3.19.1/lib/external.d.ts": "9aecb271407202ee5e93fdac5a6edf5f4e036f57e542836b64fdeae57975dd84",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/enumUtil.d.ts": "f672c876c1a04a223cf2023b3d91e8a52bb1544c576b81bf64a8fec82be9969c",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/errorUtil.d.ts": "014b34d4c2ef27191fdf3feabb6557ec92127f813910725b6e79ed9a49e466b6",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/parseUtil.d.ts": "d3dbfc2f2fbf2c1bdea72db72f9f5c95d2ca5b4d32c9e229764ebaba0920203c",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/partialUtil.d.ts": "7da6f1e431746c5364ebe6703f5d3a844ab0495e2a8cedc0a29cced52d6284a1",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/typeAliases.d.ts": "9afae14803f3b7343ed6d193173008715c1fa3421a353a818c805244ed737a84",
+    "https://esm.sh/v94/zod@3.19.1/lib/helpers/util.d.ts": "bb98c05ae5cb9bd7cb7ad76fe517251a661787a6f24337b842f47faf393f79c7",
+    "https://esm.sh/v94/zod@3.19.1/lib/index.d.ts": "0f86f053aecd06054359e146b6cd800fee9bf82905f8afb47f1fe774fd37311e",
+    "https://esm.sh/v94/zod@3.19.1/lib/locales/en.d.ts": "f8ec1611afb8d132c6c71822718805866890cf2071025153af97508eff24e4b6",
+    "https://esm.sh/v94/zod@3.19.1/lib/types.d.ts": "6c3d5c3902436de0bf51db9b31287e175dfb2afd083c5dffb30fab0e78ff6ffa"
   },
   "npm": {
     "specifiers": {
+      "@stablelib/base64": "@stablelib/base64@1.0.1",
       "@stablelib/ed25519": "@stablelib/ed25519@1.0.3",
       "@stablelib/hex": "@stablelib/hex@1.0.1",
       "@stablelib/sha256": "@stablelib/sha256@1.0.1",
       "@truestamp/canonify@1.1.1": "@truestamp/canonify@1.1.1",
-      "drand-client@0.2.0": "drand-client@0.2.0"
+      "@truestamp/id": "@truestamp/id@1.4.1",
+      "drand-client@0.2.0": "drand-client@0.2.0",
+      "iso-3166-ts": "iso-3166-ts@2.2.0",
+      "luxon": "luxon@3.1.0"
     },
     "packages": {
+      "@stablelib/base64@1.0.1": {
+        "integrity": "sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==",
+        "dependencies": {}
+      },
       "@stablelib/binary@1.0.1": {
         "integrity": "sha512-ClJWvmL6UBM/wjkvv/7m5VP3GMr9t0osr4yVgLZsLCOz4hGN9gIAFEqnJ0TsSMAN+n840nf2cHZnA5/KFqHC7Q==",
         "dependencies": { "@stablelib/int": "@stablelib/int@1.0.1" }
@@ -334,8 +390,20 @@
         "integrity": "sha512-70gB49dWJSIRP0XJz1nZluxbgagZA+iqDtFlPfNhbo9wAdJzp3Btn5TNetoIxlvyLErYmAwzA9gyiaBcm0cCgQ==",
         "dependencies": {}
       },
+      "@truestamp/id@1.4.1": {
+        "integrity": "sha512-24FvqKDqG8AX+IaJm8l/6PDaDcC6L1RqwCrWwzTvWwfousODlxbI1KOdy2lTeom6CkAm71bWO2dG1mataGiHoQ==",
+        "dependencies": {}
+      },
       "drand-client@0.2.0": {
         "integrity": "sha512-0L+X8rm1XCN908cIOYXAauXyBK32zf7y0cGLcoZVaMQmuZwbuqcVrrvQCOgh3qjptYuvnEFncMGpKf3p/7YjFw==",
+        "dependencies": {}
+      },
+      "iso-3166-ts@2.2.0": {
+        "integrity": "sha512-tgV67XkuIVjZuS5Kr8HxGeLkqnP2MFJ1KDx6dTeniZCXVs4GoF44Cgei2MSy6mv+RnPwMfL+vwvvKl0XRgl2Wg==",
+        "dependencies": {}
+      },
+      "luxon@3.1.0": {
+        "integrity": "sha512-7w6hmKC0/aoWnEsmPCu5Br54BmbmUp5GfcqBxQngRcXJ+q5fdfjEzn7dxmJh2YdDhgW8PccYtlWKSv4tQkrTQg==",
         "dependencies": {}
       }
     }

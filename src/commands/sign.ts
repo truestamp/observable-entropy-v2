@@ -5,10 +5,12 @@ import {
   encodeBase64,
   encodeHex,
   extractPublicKeyFromSecretKey,
-  signEd25519,
+  signEd25519
 } from "../deps.ts";
 
 import { digestMessage, writeCanonicalJSON } from "../utils.ts";
+
+import { EntropyResponse } from "../types.ts";
 
 import { ENTROPY_FILE } from "../constants.ts";
 
@@ -16,6 +18,7 @@ export async function sign(privKey: string) {
   console.log("sign");
 
   const entropy = Deno.readFileSync(ENTROPY_FILE);
+
   const entropyJson = JSON.parse(new TextDecoder().decode(entropy));
   const { data } = entropyJson;
 
@@ -44,7 +47,12 @@ export async function sign(privKey: string) {
     signatureType: "ed25519",
   };
 
-  await writeCanonicalJSON(ENTROPY_FILE, { ...entropyJson, ...signature });
+  const entropyResponse: EntropyResponse = EntropyResponse.parse({
+    ...entropyJson,
+    ...signature,
+  });
+
+  await writeCanonicalJSON(ENTROPY_FILE, entropyResponse);
 }
 
 export const signCommand = new Command()

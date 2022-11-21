@@ -5,12 +5,18 @@ import {
   encodeBase64,
   encodeHex,
   hash,
-  verifyEd25519,
+  verifyEd25519
 } from "../deps.ts";
 
 import { digestMessage, fetchWithTimeout } from "../utils.ts";
 
-import { ENTROPY_FILE } from "../constants.ts";
+import {
+  ENTROPY_BASE_URL,
+  ENTROPY_FILE,
+  PUBLIC_KEYS_BASE_URL
+} from "../constants.ts";
+
+import { EntropyResponse, SignedKey } from "../types.ts";
 
 function generatePublicKeyHandle(publickey: Uint8Array): string {
   return encodeHex(hash(publickey)).slice(0, 8).toLowerCase();
@@ -20,14 +26,16 @@ async function verifyPublicKey(publickey: Uint8Array): Promise<boolean> {
   try {
     const handle = generatePublicKeyHandle(publickey);
     const keyObj = await fetchWithTimeout(
-      `https://keys.truestamp.com/${handle}`,
+      `${PUBLIC_KEYS_BASE_URL}/${handle}`,
     );
 
     if (!keyObj) {
       return false;
     }
 
-    const { publicKey: foundPublicKey } = keyObj;
+    const key: SignedKey = SignedKey.parse(keyObj);
+
+    const { publicKey: foundPublicKey } = key;
     if (foundPublicKey !== encodeBase64(publickey)) {
       return false;
     }
@@ -41,7 +49,6 @@ async function verifyPublicKey(publickey: Uint8Array): Promise<boolean> {
 }
 
 async function verify(options: {
-  bucketDomain: string;
   latest?: boolean;
   hash?: string;
   file?: string;
@@ -49,10 +56,10 @@ async function verify(options: {
   let entropy;
 
   if (options.latest) {
-    const url = `https://${options.bucketDomain}/latest.json`;
+    const url = `${ENTROPY_BASE_URL}/latest`;
     entropy = await fetchWithTimeout(url);
   } else if (options.hash) {
-    const url = `https://${options.bucketDomain}/${options.hash}.json`;
+    const url = `${ENTROPY_BASE_URL}/${options.hash}`;
     entropy = await fetchWithTimeout(url);
   } else if (options.file) {
     const entropyBytes = Deno.readFileSync(ENTROPY_FILE);
@@ -67,7 +74,9 @@ async function verify(options: {
     throw new Error("invalid : no entropy");
   }
 
-  const { data, hash, publicKey, signature, signatureType } = entropy;
+  const entropyParsed = EntropyResponse.parse(entropy);
+
+  const { data, hash, publicKey, signature, signatureType } = entropyParsed;
 
   if (!data) {
     throw new Error("invalid : no entropy data");
@@ -116,13 +125,6 @@ async function verify(options: {
 
 export const verifyCommand = new Command()
   .description("Verify an entropy file.")
-  .option(
-    "-b, --bucket-domain=<bucketDomain:string>",
-    "The entropy storage bucket domain name.",
-    {
-      default: "entropy-v2.truestamp.com",
-    },
-  )
   .option("-H, --hash=<hash:string>", "The entropy hash to verify.", {
     conflicts: ["latest", "file"],
   })
@@ -132,6 +134,6 @@ export const verifyCommand = new Command()
   .option("-f, --file=<file:string>", "The local entropy file to verify.", {
     conflicts: ["hash", "latest"],
   })
-  .action(async ({ bucketDomain, hash, file, latest }) => {
-    await verify({ bucketDomain, hash, file, latest });
+  .action(async ({ hash, file, latest }) => {
+    await verify({ hash, file, latest });
   });
